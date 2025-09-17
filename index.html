@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mahsulotlar ro‘yxati</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+    <h1>🛍️ Mahsulotlar</h1>
+</header>
+
+<main class="product-list">
+    <div class="product-card" onclick="goToDetail('detail.html')">
+        <img src="https://olcha.uz/image/700x700/products/1ZtelXqunewEbSLV0ieJiYK785U99RNSWgGRAEqyD5qSnkGhvRoGWJUT5o00.jpg"
+             alt="Mahsulot">
+        <h3>Mahsulot nomi 1</h3>
+        <p class="price">120 000 so‘m</p>
+    </div>
+
+    <div class="product-card" onclick="goToDetail('detail.html')">
+        <img src="https://olcha.uz/image/700x700/products/FzRHGJzuK19yTrSsWdjXptFnuLw9KwyBEbdhDfrmkjIEgWcjirkmdmpENR5g.jpg"
+             alt="Mahsulot">
+        <h3>Mahsulot nomi 2</h3>
+        <p class="price">220 000 so‘m</p>
+    </div>
+
+    <div class="product-card" onclick="goToDetail('detail.html')">
+        <img src="https://olcha.uz/image/700x700/products/BV1wsSpH1hgVs3p5Us02SjGzc3Vv9gAdNd9ogQcxowO5FNljIOGG8rwWcVlm.jpg"
+             alt="Mahsulot">
+        <h3>Mahsulot nomi 3</h3>
+        <p class="price">95 000 so‘m</p>
+    </div>
+</main>
+
+<script>
+    function goToDetail(url) {
+      window.location.href = url;
+    }
+</script>
+</body>
+</html>
