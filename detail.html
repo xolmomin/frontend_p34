@@ -27,19 +27,17 @@
 
     <script>
         const tg = window.Telegram.WebApp;
-
-        // WebApp ma'lumotlari
-        tg.expand(); // WebApp oynasini kengaytiradi
+        tg.expand();
 
         const initData = tg.initDataUnsafe;
         console.log("Telegram foydalanuvchi ma'lumotlari:", initData);
 
-        // Masalan, foydalanuvchi ismini chiqarish
+        // Foydalanuvchi nomini chiqarish
         if (initData.user) {
             document.querySelector("h1").innerText = initData.user.first_name + " uchun mahsulot";
         }
 
-        // Tugma bosilganda serverga ma'lumot yuborish
+        // Sotib olish tugmasi
         document.querySelector(".buy-btn").addEventListener("click", () => {
             fetch("https://70fc17882c3e.ngrok-free.app/buy", {
                 method: "POST",
@@ -48,13 +46,13 @@
                 },
                 body: JSON.stringify({
                     product_id: 1,
-                    user: initData.user
+                    initData: tg.initData   // 👈 Faqat tg.initData yuborish kerak
                 })
-            }).then(res => res.json())
-              .then(data => alert("Buyurtma qabul qilindi!"));
+            })
+            .then(res => res.json())
+            .then(data => alert(data.message));
         });
     </script>
-
 </main>
 </body>
 </html>

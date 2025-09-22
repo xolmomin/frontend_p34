@@ -5,12 +5,22 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from aiogram import Bot, Dispatcher
 import uvicorn
+from fastapi.middleware.cors import CORSMiddleware
 
 BOT_TOKEN = "8329233522:AAGJWMJuYZPe2z1Qj-siN5glrk9bYu60r4U"
 
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 app = FastAPI()
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],   # test uchun barcha domenlarga ruxsat
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 def check_webapp_signature(init_data: str) -> bool:
