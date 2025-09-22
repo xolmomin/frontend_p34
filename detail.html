@@ -6,6 +6,16 @@
     <title>Mahsulot tafsiloti</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        .result-box {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background: #f9f9f9;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -25,20 +35,37 @@
         <button class="buy-btn">🛒 Sotib olish</button>
     </div>
 
+    <!-- Natija chiqariladigan joy -->
+    <div class="result-box" id="result"></div>
+
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        const initData = tg.initDataUnsafe;
-        console.log("Telegram foydalanuvchi ma'lumotlari:", initData);
+        const initDataUnsafe = tg.initDataUnsafe;
+        console.log("Telegram foydalanuvchi ma'lumotlari:", initDataUnsafe);
 
         // Foydalanuvchi nomini chiqarish
-        if (initData.user) {
-            document.querySelector("h1").innerText = initData.user.first_name + " uchun mahsulot";
+        if (initDataUnsafe.user) {
+            document.querySelector("h1").innerText = initDataUnsafe.user.first_name + " uchun mahsulot";
         }
 
         // Sotib olish tugmasi
         document.querySelector(".buy-btn").addEventListener("click", () => {
+            const resultBox = document.getElementById("result");
+
+            // Ma'lumotlarni ekranda ko‘rsatish
+            resultBox.textContent =
+                "🛍 Buyurtma ma'lumotlari\n\n" +
+                "📦 Mahsulot ID: 1\n" +
+                "👤 Foydalanuvchi ID: " + initDataUnsafe.user?.id + "\n" +
+                "👤 Ism: " + initDataUnsafe.user?.first_name + "\n" +
+                (initDataUnsafe.user?.last_name ? "👤 Familiya: " + initDataUnsafe.user.last_name + "\n" : "") +
+                (initDataUnsafe.user?.username ? "🔗 Username: @" + initDataUnsafe.user.username + "\n" : "") +
+                "🌐 Til: " + initDataUnsafe.user?.language_code + "\n" +
+                "🕒 Auth date: " + initDataUnsafe.auth_date;
+
+            // Serverga ham jo‘natish
             fetch("https://70fc17882c3e.ngrok-free.app/buy", {
                 method: "POST",
                 headers: {
@@ -46,11 +73,16 @@
                 },
                 body: JSON.stringify({
                     product_id: 1,
-                    initData: tg.initData   // 👈 Faqat tg.initData yuborish kerak
+                    initData: tg.initData   // server tekshirishi uchun original string yuboriladi
                 })
             })
             .then(res => res.json())
-            .then(data => alert(data.message));
+            .then(data => {
+                resultBox.textContent += "\n\n✅ Server javobi:\n" + JSON.stringify(data, null, 2);
+            })
+            .catch(err => {
+                resultBox.textContent += "\n\n❌ Xato: " + err;
+            });
         });
     </script>
 </main>

@@ -13,10 +13,9 @@ bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 app = FastAPI()
 
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],   # test uchun barcha domenlarga ruxsat
+    allow_origins=["*"],  # test uchun barcha domenlarga ruxsat
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -40,6 +39,7 @@ async def buy(request: Request):
     data = await request.json()
     product_id = data.get("product_id")
     init_data = data.get("initData")
+    print(data)
 
     if not check_webapp_signature(init_data):
         return JSONResponse({"status": "error", "message": "Invalid initData"}, status_code=403)
