@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mahsulot tafsiloti</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
 <header>
@@ -23,6 +24,37 @@
         </p>
         <button class="buy-btn">🛒 Sotib olish</button>
     </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+
+        // WebApp ma'lumotlari
+        tg.expand(); // WebApp oynasini kengaytiradi
+
+        const initData = tg.initDataUnsafe;
+        console.log("Telegram foydalanuvchi ma'lumotlari:", initData);
+
+        // Masalan, foydalanuvchi ismini chiqarish
+        if (initData.user) {
+            document.querySelector("h1").innerText = initData.user.first_name + " uchun mahsulot";
+        }
+
+        // Tugma bosilganda serverga ma'lumot yuborish
+        document.querySelector(".buy-btn").addEventListener("click", () => {
+            fetch("https://70fc17882c3e.ngrok-free.app/buy", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    product_id: 1,
+                    user: initData.user
+                })
+            }).then(res => res.json())
+              .then(data => alert("Buyurtma qabul qilindi!"));
+        });
+    </script>
+
 </main>
 </body>
 </html>
